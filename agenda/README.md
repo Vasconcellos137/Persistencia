@@ -1,5 +1,26 @@
 31.10.25
 
+Persistência - Serve/Pode ser usado:
+•Arquivos de texto;
+•Arquivos binários;
+•Banco de dados.
+
+*Conecta o BD ao código no VsCode.
+
+Mapeamento Objeto-Relacional
+*Padrão de Projeto (Design Pattems)
+
+•MVC: Model View Controller -> São basicamente separação por pacotes, organizar a arquitetura, a estrutura;
+Cada coisa esta num separado -> [Model] <-> [Controller] <-> [View]
+
+•Singleton -> Garantir que cada objeto..??
+
+•Factory-> ??
+
+•Data Access Object -> ??
+
+-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•
+
 CÓDIGO ou SCRIPT P/ BANCO DE DADOS
 
 create database Agenda;
@@ -22,4 +43,12 @@ create table contatos(
     FOREIGN KEY (id_endereco) REFERENCES enderecos(id)
 );
 
+-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•-•
+
 • P/ cada classe persistente é necessário ter um "dao".
+
+•Padrões de Projeto usandos:
+-MVC
+-Factory
+-Singleton
+-dao
