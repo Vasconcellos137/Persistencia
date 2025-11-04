@@ -13,6 +13,10 @@ Mapeamento Objeto-Relacional
 •MVC: Model View Controller -> São basicamente separação por pacotes, organizar a arquitetura, a estrutura;
 Cada coisa esta num separado -> [Model] <-> [Controller] <-> [View]
 
+*View - Interface de interação.
+*Controller - Regras de negócio, validações.
+*Model (orm) - Mapeamento do BD.
+
 •Singleton -> Garantir que cada objeto..??
 
 •Factory-> ??

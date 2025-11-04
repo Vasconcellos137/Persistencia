@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 import br.edu.ifpr.agenda.model.Contato;
+import br.edu.ifpr.agenda.model.Endereco;
 
 //P/ cada comando Sql que precisar executar, terá uma "linha" aq tbm..
 //Esse recurso é um CRUD - Create, Read, Update e Delete. 
@@ -68,4 +71,151 @@ public class ContatoDAO {
         }
 
     }
+
+//Atualização
+    public void updateSemContato(Contato contato){
+        Connection cow = ConnectionFactory.getConnection();
+        try {
+            String sql = "upadate contatos set nome = ?, celular = ?, email = ?";
+            PreparedStatement ps = cow.prepareStatement(sql);
+            ps.setString(1, contato.getNome());
+            ps.setString(2, contato.getCelular());
+            ps.setString(3, contato.getEmail());
+            ps.executeUpdate();
+            System.out.println("Contato atualizado com sucesso..");            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void update(Contato contato){
+        Connection cow = ConnectionFactory.getConnection();
+
+        try {
+            String sqlEndereco = "UPDATE enderecos SET rua = ?, numero = ?, cidade = ?, estado = ?";
+            PreparedStatement psEndereco = cow.prepareStatement(sqlEndereco, Statement.RETURN_GENERATED_KEYS);
+            psEndereco.setString(1, contato.getEndereco().getRua());
+            psEndereco.setString(2, contato.getEndereco().getNumero());
+            psEndereco.setString(3, contato.getEndereco().getCidade());
+            psEndereco.setString(4, contato.getEndereco().getEstado());
+            psEndereco.executeUpdate();
+
+            ResultSet rs = psEndereco.getGeneratedKeys();
+            int idEndereco = 0;
+            if (rs.next())
+                idEndereco = rs.getInt(1);
+
+            String sql = "UPDATE contatos SET nome = ?, celular = ?, email = ?";
+            PreparedStatement ps = cow.prepareStatement(sql);
+            ps.setString(1, contato.getNome());
+            ps.setString(2, contato.getCelular());
+            ps.setString(3, contato.getEmail());
+            ps.setInt(4, idEndereco);
+            ps.executeUpdate();
+            System.out.println("Contato atualizado com sucesso..");            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+//Deletar/Excluir
+
+    public void delete(int id){
+        Connection cow = ConnectionFactory.getConnection();
+        try {
+            String sqlEndereco = "DELETE FROM enderecos WHERE id = ?";
+            PreparedStatement psEnd = cow.prepareStatement(sqlEndereco, Statement.RETURN_GENERATED_KEYS);
+            psEnd.setInt(1, id); 
+            psEnd.executeUpdate();
+
+            String sql = "DELETE FROM contatos WHERE id = ?";
+            PreparedStatement ps = cow.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            System.out.println("Contato excluído com sucesso..");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void deleteSemEndereco(int id){
+        Connection cow = ConnectionFactory.getConnection();
+        try {
+            String sql = "DELETE FROM contatos WHERE id = ?";
+            PreparedStatement ps = cow.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            System.out.println("Contato excluído com sucesso..");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+//Select/Selecionar 
+    public ArrayList<Contato> selectSemEndereco(){
+        Connection cow = ConnectionFactory.getConnection();
+        ArrayList<Contato> contatoS = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM contatos WHERE id = ?";
+            PreparedStatement ps = cow.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Contato contato = new Contato();
+                contato.setId(rs.getInt("Id"));
+                contato.setNome(rs.getString("nome"));
+                contato.setCelular(rs.getString("celular"));
+                contato.setEmail(rs.getString("email"));     
+                contatoS.add(contato);                              
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return contatoS;
+    }
+
+    public LinkedList<Contato> select(){
+        Connection cow = ConnectionFactory.getConnection();
+        LinkedList<Contato> contatoS = new LinkedList<>();
+        LinkedList<Endereco> enderecoS = new LinkedList();
+        try {
+
+            String sqlEndereco = "SELECT * FROM contatos WHERE id = ?";
+            PreparedStatement psEndereco = cow.prepareStatement(sqlEndereco, Statement.RETURN_GENERATED_KEYS);
+            ResultSet rsEnd = psEndereco.executeQuery();
+            while (rsEnd.next()) {
+                Endereco end = new Endereco();
+                end.setRua(rsEnd.getString("rua"));
+                end.setRua(rsEnd.getString("numero"));
+                end.setRua(rsEnd.getString("cidade"));
+                end.setRua(rsEnd.getString("estado"));
+                enderecoS.add(end);
+                                
+            }
+
+            ResultSet rs = psEndereco.getGeneratedKeys();
+            int idEndereco = 0;
+            if (rs.next())
+                idEndereco = rs.getInt(1);
+
+
+            String sql = "SELECT * FROM contatos WHERE id = ?";
+            PreparedStatement ps = cow.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Contato contato = new Contato();
+                contato.setId(rs.getInt("Id"));
+                contato.setNome(rs.getString("nome"));
+                contato.setCelular(rs.getString("celular"));
+                contato.setEmail(rs.getString("email"));     
+                contatoS.add(contato);                              
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return contatoS;
+    }
 }
+
+

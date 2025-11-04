@@ -15,10 +15,10 @@ public class ConnectionFactory {
         try {
             if (conexao == null) {
                 // jdbc:gbdb://ip do servidor do BD: porta/database
-                String url = "jdbc:mysql://127.0.0.1:3306/agenda";   //localhost:3306    // <-- Aqui tbm
+                String url = "jdbc:mysql://localhost:3306/agenda";   //localhost:3306   // <-- Aqui tbm
                 String user = "aluno";      //root                                       // <-- Muda conforme a máquina q tu está a usar
                 String password = "aluno";     //root                                    // <-- Esse tbm muda
-                conexao = DriverManager.getConnection(url, user, password);              //Tu precisas trocar o nome de acondo com o MySql do PC
+                conexao = DriverManager.getConnection(url, user, password);             //Tu precisas trocar o nome de acondo com o MySql do PC
                 System.out.println("Tás conectadii bixa !!!");
             }
         } catch (SQLException e) {

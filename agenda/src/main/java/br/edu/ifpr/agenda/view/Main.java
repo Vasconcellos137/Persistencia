@@ -28,10 +28,11 @@ public class Main {
 
         ContatoController controller = new ContatoController();
         contato.setNome("Fulanin");
-        contato.setCelular("(45 99987-6675)");
+        contato.setCelular("(45) 99987-6675");
         contato.setEmail("157fulanin@gmail.com");
         contato.setEndereco(endereco);
         controller.cadastrarContato(contato);
 
+        
     }
 }
